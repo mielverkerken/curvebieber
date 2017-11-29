@@ -1,1 +1,2 @@
-# groep-11
+# groep-11 - curve
+Miel Verkerken - Robin Dejonckheere
