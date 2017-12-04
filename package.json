@@ -3,13 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "mocha --reporter nyan"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "chai": "^4.1.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "flat": "^4.0.0",
+    "mocha": "^4.0.1",
     "morgan": "~1.9.0",
     "nodemon": "^1.12.1",
     "pug": "2.0.0-beta11",
