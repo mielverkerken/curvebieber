@@ -85,3 +85,58 @@ describe('redis', function () {
         res.should.be.true;
     });
 });
+
+describe('User', function () {
+    const User = require('../bin/user');
+
+    it('should be able to create a instance of User', function () {
+        let user = new User();
+        user.should.be.an.instanceof(User);
+    });
+
+    it('should be able to use getters and setters', function () {
+        let user = new User("Miel", "Verkerken", "epicmieltime", 99);
+        user.should.be.an.instanceof(User);
+        user.should.have.property('firstname', 'Miel');
+        user.should.have.property('lastname', 'Verkerken');
+        user.should.have.property('nickname', 'epicmieltime');
+        user.should.have.property('points', 99);
+        user.firstname = "Robin";
+        user.lastname = "Dejonckheere";
+        user.nickname = "fluffy boi";
+        user.points = 1;
+        user.should.have.property('firstname', 'Robin');
+        user.should.have.property('lastname', 'Dejonckheere');
+        user.should.have.property('nickname', 'fluffy boi');
+        user.should.have.property('points', 1);
+    });
+});
+
+describe('Game', function () {
+    const Game = require('../bin/game');
+
+    it('should be able to create a instance of Game', function () {
+        let game = new Game();
+        game.should.be.an.instanceof(Game);
+    });
+
+    it('should be able to use getters and setters', function () {
+        let game = new Game("Game1", 10, "waiting", 8, []);
+        game.should.be.an.instanceof(Game);
+        game.should.have.property('name', 'Game1');
+        game.should.have.property('points', 10);
+        game.should.have.property('status', 'waiting');
+        game.should.have.property('maxPlayers', 8);
+        game.should.have.deep.property('joinedPlayers', []);
+        game.name = "Game63";
+        game.points = 15;
+        game.status = "started";
+        game.maxPlayers = 4;
+        game.joinedPlayers = ["fluffy boi", "epicmieltime"];
+        game.should.have.property('name', 'Game63');
+        game.should.have.property('points', 15);
+        game.should.have.property('status', 'started');
+        game.should.have.property('maxPlayers', 4);
+        game.should.have.deep.property('joinedPlayers', ["fluffy boi", "epicmieltime"]);
+    });
+});
