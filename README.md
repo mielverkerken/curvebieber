@@ -21,3 +21,4 @@ url | description
 /login | user login (formulier)
 /lobby | all open games in list, option to create new game with pop-up, join game
 /game | canvas with curve 
+/room | waiting room before game starts
