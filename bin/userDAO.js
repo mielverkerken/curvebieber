@@ -33,8 +33,8 @@ class UserDAO {
      // possible improvments: use a transaction to ensure nickname is still unused
       */
     async addUser (user) {
-        let freeNick = await this.source.containsInSet(NICKNAMES, user.nickname);
-        if (freeNick) {
+        let usedNick = await this.source.containsInSet(NICKNAMES, user.nickname);
+        if (usedNick) {
             return false;
         }
         let action1, action2, action3;
@@ -75,7 +75,7 @@ class UserDAO {
      */
     async updateUser (user) {
         await Promise.all([
-            this.source.setObject(user.nickname, user),
+            this.source.setObject(prefix + user.nickname, user),
             this.source.addToSortedSet(RANK, user.points, user.nickname)
         ]);
         return true;
@@ -84,5 +84,5 @@ class UserDAO {
 
 // module exports singleton userdao with currently only redis as source
 // improvents: create factory that creates dao for each datasource
-let userDAO = new UserDAO(Redis);
+let userDAO = new UserDAO(new Redis());
 module.exports = userDAO;

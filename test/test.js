@@ -9,7 +9,8 @@ Test this file using "npm test"
 
 describe('redis', function () {
 
-    const redis = require('../bin/redis');
+    const Redis = require('../bin/redis');
+    const redis = new Redis();
     const key = "key";
     const value = "value";
     const keyObject = "keyObject";
@@ -38,6 +39,7 @@ describe('redis', function () {
         // flush testdata and change back to original db
         await redis.flushDB();
         await redis.selectDB(0);
+        await redis.close();
     });
 
     it('should be able to add/get a key-value pair', async function () {
@@ -203,13 +205,15 @@ describe('Game', function () {
 describe("UserDAO", function () {
     const userDAO = require('../bin/userDAO');
     const User = require('../bin/user');
-    const redis = require('../bin/redis');
+    const Redis = require('../bin/redis');
+    const redis = new Redis();
     const user = new User("Miel", "Verkerken", "epicmieltime", "1");
     const user2 = new User("Robin", "Dejonckheere", "fluffy boi", "2");
 
     before(async function () {
         // change to empty db for testing
         await redis.selectDB(1);
+        await userDAO.source.selectDB(1);
     });
 
     beforeEach(async function () {
@@ -221,6 +225,8 @@ describe("UserDAO", function () {
         // flush testdata and change back to original db
         await redis.flushDB();
         await redis.selectDB(0);
+        await userDAO.source.close();
+        await redis.close();
     });
 
     it("should be able to add/get a user", async function () {
@@ -265,7 +271,7 @@ describe("UserDAO", function () {
         res.should.be.true;
         res = await userDAO.addUser(user2);
         res.should.be.true;
-        user.points = 10;
+        user.points = "10";
         res = await userDAO.updateUser(user);
         res.should.be.true;
         res = await userDAO.getRank(user.nickname);

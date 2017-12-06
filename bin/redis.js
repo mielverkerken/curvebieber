@@ -124,7 +124,7 @@ class Redis {
                 properties.push(flatObject[prop]);
             }
             // set mulitple properties in redis
-            this.client.hmset(key, properties, function (err, reply) {
+            return this.client.hmset(key, properties, function (err, reply) {
                 if (err) {
                     console.error(err);
                     return reject(err);
@@ -334,8 +334,20 @@ class Redis {
             });
         });
     }
+
+    async close () {
+        return new Promise((resolve, reject) => {
+            this.client.quit(function (err, reply) {
+                if (err) {
+                    console.error(err);
+                    return reject(err);
+                }
+                return resolve(reply);
+            });
+        });
+    }
 }
 
 // let redisInstance = new Redis();
 // module exports redis connection in a wrapper
-module.exports = new Redis();
+module.exports = Redis;
