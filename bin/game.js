@@ -5,6 +5,16 @@ class Game {
         this._status = status;
         this._maxPlayers = maxPlayers;
         this._joinedPlayers = joinedPlayers;
+        this._timestamp = Date.now();
+        this._id = null;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    set id(value) {
+        this._id = value;
     }
 
     get name() {
@@ -45,6 +55,14 @@ class Game {
 
     set joinedPlayers(value) {
         this._joinedPlayers = value;
+    }
+
+    get timestamp() {
+        return this._timestamp;
+    }
+
+    set timestamp(value) {
+        this._timestamp = value;
     }
 }
 

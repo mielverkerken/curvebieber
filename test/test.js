@@ -263,9 +263,12 @@ describe("UserDAO", function () {
         res.should.be.true;
         res = await userDAO.getUser(user.nickname);
         (res === null).should.be.true;
+        res = await userDAO.getRank(user.nickname);
+        (res === null).should.be.true;
+        res = await userDAO.source.containsInSet("NICKNAMES", user.nickname);
+        res.should.be.false;
     });
 
-    // TODO here is still something strange going on..
     it("should be able to update a user", async function () {
         let res = await userDAO.addUser(user);
         res.should.be.true;
@@ -278,5 +281,71 @@ describe("UserDAO", function () {
         res.should.eql(0);
         res = await userDAO.getUser(user.nickname);
         res.should.eql(user);
+    });
+});
+
+// improve: mock redis object and pass it throw constructor of gameDAO to only test userdao without dependencies
+describe("GameDAO", function () {
+    const gameDAO = require('../bin/gameDAO');
+    const Game = require('../bin/game');
+    const game1 = new Game("Game1", "10", "waiting", "4", ["epicmieltime", "fluffy boi"]);
+    const game2 = new Game("Game1", "15", "ended", "6", ["fluffy boi", "epicmieltime"]);
+
+    before(async function () {
+        // change to empty db for testing
+        await gameDAO.source.selectDB(1);
+    });
+
+    beforeEach(async function () {
+        // start from empty db every test
+        await gameDAO.source.flushDB();
+    });
+
+    after(async function () {
+        // flush testdata and change back to original db
+        await gameDAO.source.flushDB();
+        await gameDAO.source.selectDB(0);
+        await gameDAO.source.close();
+    });
+
+    it("should be able to add/get a game", async function () {
+        let res = await gameDAO.addGame(game1);
+        res = await gameDAO.getGame(res);
+        (res._name).should.eql(game1.name);
+        (res._points).should.eql(game1.points);
+        (res._status).should.eql(game1.status);
+        (res._maxPlayers).should.eql(game1.maxPlayers);
+        (res._joinedPlayers).should.eql(game1.joinedPlayers);
+    });
+
+    it("should be able to get all games", async function () {
+        await gameDAO.addGame(game1);
+        await gameDAO.addGame(game2);
+        let res = await gameDAO.getAllGemes();
+        res.should.have.length(2);
+    });
+
+    it("should be able to delete a game", async function () {
+        let res = await gameDAO.addGame(game1);
+        res.should.not.be.false;
+        res = await gameDAO.addGame(game2);
+        res.should.not.be.false;
+        res = await gameDAO.deleteGame(game1.id);
+        res.should.be.true;
+        res = await gameDAO.getGame(game1.id);
+        (res === null).should.be.true;
+        res = await gameDAO.getAllGemes();
+        res.should.have.length(1);
+    });
+
+    it("should be able to update a game", async function () {
+        let res = await gameDAO.addGame(game1);
+        res.should.not.be.false;
+        game1.name = "New Name";
+        res = await gameDAO.updateGame(game1);
+        res = await gameDAO.getGame(game1.id);
+        (res._name).should.eql(game1.name);
+        res = await gameDAO.getAllGemes();
+        res.should.have.length(1);
     });
 });
