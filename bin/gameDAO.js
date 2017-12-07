@@ -18,7 +18,13 @@ class GameDAO {
     }
 
     async getGame (id) {
-        return await this.source.getObject(prefix + id);
+        let result = await this.source.getObject(prefix + id);
+        if (!result) {
+            let error = new Error("No game found with id: " + id);
+            error.status = 404;
+            throw error;
+        }
+        return result;
     }
 
     // gives a game an id, adds it to redis and add it in ordered set of games sorted on timestamp
@@ -31,9 +37,11 @@ class GameDAO {
         ]);
         if (!action1 || !action2) {
             console.error("something went adding game");
-            return false;
+            let error = new Error("something went wrong persisting a new game");
+            error.status = 500;
+            throw error;
         }
-        return game.id;
+        return game;
     }
 
     // delete game from ordered set en delete object
@@ -52,11 +60,14 @@ class GameDAO {
 
     // update timestamp in set needed?
     async updateGame (game) {
-        await Promise.all([
-            this.source.addToSortedSet(GAMES, game.timestamp, game.id),
-            this.source.setObject(prefix + game.id, game)
-        ]);
-        return true;
+        let exists = await this.source.getObject(prefix + game.id);
+        if (!exists) {
+            let error = new Error("game is not found");
+            error.status = 404;
+            throw error;
+        }
+        await this.source.setObject(prefix + game.id, game);
+        return game;
     }
 }
 

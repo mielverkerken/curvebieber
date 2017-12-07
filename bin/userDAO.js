@@ -19,7 +19,13 @@ class UserDAO {
 
     // returns full object of a user
     async getUser (nickname) {
-        return await this.source.getObject(prefix + nickname);
+        let result = await this.source.getObject(prefix + nickname);
+        if (!result) {
+            let error = new Error("No user found with nickname: " + nickname);
+            error.status = 404;
+            throw error;
+        }
+        return result;
     }
 
     async getRank (nickname) {
@@ -35,7 +41,9 @@ class UserDAO {
     async addUser (user) {
         let usedNick = await this.source.containsInSet(NICKNAMES, user.nickname);
         if (usedNick) {
-            return false;
+            let error = new Error("nickname is already in use");
+            error.status = 409;
+            throw error;
         }
         let action1, action2, action3;
         [action1, action2, action3] = await Promise.all([
@@ -45,9 +53,11 @@ class UserDAO {
         ]);
         if (!action1 || !action2 || !action3) {
             console.error("something went wrong persisting a new user:", user.nickname);
-            return false;
+            let error = new Error("something went wrong persisting a new user");
+            error.status = 500;
+            throw error;
         }
-        return true;
+        return user;
     }
 
     /*
@@ -74,11 +84,17 @@ class UserDAO {
     2) update ranking
      */
     async updateUser (user) {
+        let usedNick = await this.source.containsInSet(NICKNAMES, user.nickname);
+        if (!usedNick) {
+            let error = new Error("nickname is unused");
+            error.status = 404;
+            throw error;
+        }
         await Promise.all([
             this.source.setObject(prefix + user.nickname, user),
             this.source.addToSortedSet(RANK, user.points, user.nickname)
         ]);
-        return true;
+        return user;
     }
 }
 

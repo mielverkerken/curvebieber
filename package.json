@@ -7,12 +7,15 @@
     "test": "mocha --reporter nyan"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "chai": "^4.1.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "express-validation": "^1.0.2",
     "flat": "^4.0.0",
+    "joi": "^13.0.2",
     "mocha": "^4.0.1",
     "morgan": "~1.9.0",
     "nodemon": "^1.12.1",
