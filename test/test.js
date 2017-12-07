@@ -231,38 +231,32 @@ describe("UserDAO", function () {
 
     it("should be able to add/get a user", async function () {
         let res = await userDAO.addUser(user);
-        res.should.be.true;
         res = await userDAO.getUser(user.nickname);
         res.should.eql(user);
     });
 
     it("should be able to getAllUsers", async function () {
         let res = await userDAO.addUser(user);
-        res.should.be.true;
         res = await userDAO.addUser(user2);
-        res.should.be.true;
         res = await userDAO.getAllUsers();
         res.should.eql(["fluffy boi", "epicmieltime"]);
     });
 
     it("should be able to get rank of a user", async function () {
         let res = await userDAO.addUser(user);
-        res.should.be.true;
         res = await userDAO.addUser(user2);
-        res.should.be.true;
         res = await userDAO.getRank(user.nickname);
         res.should.be.eql(1);
     });
 
     it("should be able to delete a user", async function () {
         let res = await userDAO.addUser(user);
-        res.should.be.true;
         res = await userDAO.addUser(user2);
-        res.should.be.true;
         res = await userDAO.deleteUser(user.nickname);
-        res.should.be.true;
-        res = await userDAO.getUser(user.nickname);
-        (res === null).should.be.true;
+        //res = await userDAO.getUser(user.nickname);
+        userDAO.getUser(user.nickname).catch(e => {
+            e.should.not.be.null;
+        });
         res = await userDAO.getRank(user.nickname);
         (res === null).should.be.true;
         res = await userDAO.source.containsInSet("NICKNAMES", user.nickname);
@@ -271,12 +265,9 @@ describe("UserDAO", function () {
 
     it("should be able to update a user", async function () {
         let res = await userDAO.addUser(user);
-        res.should.be.true;
         res = await userDAO.addUser(user2);
-        res.should.be.true;
         user.points = "10";
         res = await userDAO.updateUser(user);
-        res.should.be.true;
         res = await userDAO.getRank(user.nickname);
         res.should.eql(0);
         res = await userDAO.getUser(user.nickname);
@@ -310,7 +301,7 @@ describe("GameDAO", function () {
 
     it("should be able to add/get a game", async function () {
         let res = await gameDAO.addGame(game1);
-        res = await gameDAO.getGame(res);
+        res = await gameDAO.getGame(res.id);
         (res._name).should.eql(game1.name);
         (res._points).should.eql(game1.points);
         (res._status).should.eql(game1.status);
@@ -332,8 +323,9 @@ describe("GameDAO", function () {
         res.should.not.be.false;
         res = await gameDAO.deleteGame(game1.id);
         res.should.be.true;
-        res = await gameDAO.getGame(game1.id);
-        (res === null).should.be.true;
+        gameDAO.getGame(game1.id).catch(e=> {
+            e.should.not.be.null;
+        });
         res = await gameDAO.getAllGemes();
         res.should.have.length(1);
     });
