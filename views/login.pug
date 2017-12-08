@@ -1,0 +1,14 @@
+extends _bootstrap
+append styles
+    // Custom styles for this template
+    link(href='/stylesheets/signin.css', rel='stylesheet')
+block content
+    .container
+        form.form-signin
+            h2.form-signin-heading Please sign in
+            label.sr-only(for='inputEmail') Nickname
+            input#inputEmail.form-control(type='email', placeholder='Nickname', required='', autofocus='')
+            label.sr-only(for='inputPassword') Password
+            input#inputPassword.form-control(type='password', placeholder='Password', required='')
+            button.btn.btn-lg.btn-success.btn-block(type='submit') Sign in
+            a.btn.btn-lg.btn-default.btn-block(href='/register', role="button") Register

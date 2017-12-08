@@ -1,0 +1,19 @@
+extends _bootstrap
+append styles
+    // Custom styles for this template
+    link(href='/stylesheets/register.css', rel='stylesheet')
+
+block content
+    .container
+        form(method='POST' action="/register" id='registerform')
+            h2 Register
+            div.form-group
+                label(for='firstname') Firstname:
+                input.form-control(type='text' id='firstname' placeholder='Firstname' name='firstname' required)
+            div.form-group
+                label(for='lastname') Lastname:
+                input.form-control(type='text' id='lastname' placeholder='Lastname' name='lastname' required)
+            div.form-group
+                label(for='nickname') Nickname:
+                input.form-control(type='text' id='nickname' placeholder='nickname' name='nickname' required)
+            button.btn.btn-lg.btn-success.btn-block(type='submit') Register
