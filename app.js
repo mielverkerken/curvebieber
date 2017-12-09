@@ -44,6 +44,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // check if user is logged in and visiting authenticated url's
 app.use(function (req, res, next) {
+    if (req.originalUrl.startsWith('/api')) {
+        return next();
+    }
     if (!req.session.user && req.originalUrl !== "/" && req.originalUrl !== "/login" && req.originalUrl !== "/register") {
         return res.render("login", {message: "first login before accessing the restricted area"});
     }
