@@ -4,11 +4,13 @@ append styles
     link(href='/stylesheets/signin.css', rel='stylesheet')
 block content
     .container
-        form.form-signin
-            h2.form-signin-heading Please sign in
-            label.sr-only(for='inputEmail') Nickname
-            input#inputEmail.form-control(type='email', placeholder='Nickname', required='', autofocus='')
-            label.sr-only(for='inputPassword') Password
-            input#inputPassword.form-control(type='password', placeholder='Password', required='')
-            button.btn.btn-lg.btn-success.btn-block(type='submit') Sign in
+        form(method='POST' action="/login" id='loginform').form-signin
+            h2 Login
+            div.form-group
+                label.sr-only(for='nickname') Nickname:
+                input.form-control(type='text' id='nickname' placeholder='Nickname' name='nickname' required autofocus)
+            div.form-group
+                label.sr-only(for='password') Password:
+                input.form-control(type='password' id='password' placeholder='Password' name='password' required)
+            button.btn.btn-lg.btn-success.btn-block(type='submit') Login
             a.btn.btn-lg.btn-default.btn-block(href='/register', role="button") Register

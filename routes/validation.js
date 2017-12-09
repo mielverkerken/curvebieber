@@ -41,9 +41,27 @@ let updateGame = {
     }
 };
 
+let register = {
+    body: {
+        firstname: Joi.string().max(MAXCHAR).required(),
+        lastname: Joi.string().max(MAXCHAR).required(),
+        nickname: Joi.string().max(MAXCHAR).required(),
+        password: Joi.string().max(MAXCHAR).required()
+    }
+};
+
+let login = {
+    body: {
+        nickname: Joi.string().max(MAXCHAR).required(),
+        password: Joi.string().max(MAXCHAR).required(),
+    }
+};
+
 module.exports = {
     newUser: newUser,
     updateUser: updateUser,
     newGame: newGame,
-    updateGame: updateGame
+    updateGame: updateGame,
+    login: login,
+    register: register
 };

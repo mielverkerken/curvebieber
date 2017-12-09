@@ -207,8 +207,8 @@ describe("UserDAO", function () {
     const User = require('../bin/user');
     const Redis = require('../bin/redis');
     const redis = new Redis();
-    const user = new User("Miel", "Verkerken", "epicmieltime", "1");
-    const user2 = new User("Robin", "Dejonckheere", "fluffy boi", "2");
+    const user = new User("Miel", "Verkerken", "epicmieltime", "1", "pass");
+    const user2 = new User("Robin", "Dejonckheere", "fluffy boi", "2", "pass");
 
     before(async function () {
         // change to empty db for testing

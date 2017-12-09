@@ -61,6 +61,19 @@ html(lang="en")
 		block body
 			+navbar-fixed("Curvebieber","navbar","inverse")
 				// +nav_item("/","active") Home
+			if message
+				if message.type === "success"
+					.alert.alert-dismissible(role="alert",class='alert-success')
+						span.glyphicon.text-success(class=`glyphicon-ok-sign`,aria-hidden="true")
+						button.close(type="button",data-dismiss="alert" aria-label="Close")
+							span(aria-hidden="true")  &times;
+						= " " + message.text
+				if message.type === "danger"
+					.alert.alert-dismissible(role="alert",class='alert-danger')
+						span.glyphicon.text-danger(class=`glyphicon-remove-sign`,aria-hidden="true")
+						button.close(type="button",data-dismiss="alert" aria-label="Close")
+							span(aria-hidden="true")  &times;
+						= " " + message.text
 			.container
 				.starter-template
 					block content

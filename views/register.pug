@@ -9,11 +9,14 @@ block content
             h2 Register
             div.form-group
                 label(for='firstname') Firstname:
-                input.form-control(type='text' id='firstname' placeholder='Firstname' name='firstname' required)
+                input.form-control(type='text' id='firstname' placeholder='Firstname' name='firstname' required autofocus)
             div.form-group
                 label(for='lastname') Lastname:
                 input.form-control(type='text' id='lastname' placeholder='Lastname' name='lastname' required)
             div.form-group
                 label(for='nickname') Nickname:
                 input.form-control(type='text' id='nickname' placeholder='nickname' name='nickname' required)
+            div.form-group
+                label(for='password') Password:
+                input.form-control(type='password' id='password' placeholder='password' name='password' required)
             button.btn.btn-lg.btn-success.btn-block(type='submit') Register

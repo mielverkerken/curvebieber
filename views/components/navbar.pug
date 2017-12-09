@@ -67,7 +67,11 @@ mixin navbar-fixed(name,id,style)
         a.navbar-brand(href='/')= name
       .collapse.navbar-collapse( id=id )
         ul.nav.navbar-nav.navbar-right
-          li: a(href='/login') #[span.glyphicon-user.glyphicon] Login
+            if user
+                li: a(href="/logout") #[span.glyphicon-log-out.glyphicon] Log out
+                li: a(href="#") #[span.glyphicon-user.glyphicon] #{user._nickname}
+            else
+                li: a(href='/login') #[span.glyphicon-user.glyphicon] Login
         ul.nav.navbar-nav
           block
 
