@@ -1,0 +1,13 @@
+extends ../_bootstrap
+append styles
+	// Custom styles for this template
+	link(href='/stylesheets/starter-template.css', rel='stylesheet')
+block body
+	+navbar-fixed("Curvebieber","navbar","inverse")
+		+nav_item("#","active") Home
+		+nav_item("#") Login
+	.container
+		.starter-template
+			block content
+	
+

@@ -25,7 +25,7 @@ class UserDAO {
             error.status = 404;
             throw error;
         }
-        return result;
+        return new User(result._firstname, result._lastname, result._nickname, result._points, result._password);
     }
 
     async getRank (nickname) {

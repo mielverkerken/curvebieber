@@ -1,5 +1,7 @@
-extends layout
+extends _bootstrap
 
 block content
   h1= title
   p Welcome to #{title}
+  if user
+    // p #{user._firstname} #{user._lastname} #{user._nickname}

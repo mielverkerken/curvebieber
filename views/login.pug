@@ -1,0 +1,16 @@
+extends _bootstrap
+append styles
+    // Custom styles for this template
+    link(href='/stylesheets/signin.css', rel='stylesheet')
+block content
+    .container
+        form(method='POST' action="/login" id='loginform').form-signin
+            h2 Login
+            div.form-group
+                label.sr-only(for='nickname') Nickname:
+                input.form-control(type='text' id='nickname' placeholder='Nickname' name='nickname' required autofocus)
+            div.form-group
+                label.sr-only(for='password') Password:
+                input.form-control(type='password' id='password' placeholder='Password' name='password' required)
+            button.btn.btn-lg.btn-success.btn-block(type='submit') Login
+            a.btn.btn-lg.btn-default.btn-block(href='/register', role="button") Register

@@ -1,9 +1,10 @@
 class User {
-    constructor (firstname, lastname, nickname, points) {
+    constructor (firstname, lastname, nickname, points, password) {
         this._firstname = firstname;
         this._lastname = lastname;
         this._nickname = nickname;
         this._points = points;
+        this._password = password;
     }
 
     get firstname() {
@@ -36,6 +37,14 @@ class User {
 
     set points(value) {
         this._points = value;
+    }
+
+    get password() {
+        return this._password;
+    }
+
+    set password(value) {
+        this._password = value;
     }
 }
 

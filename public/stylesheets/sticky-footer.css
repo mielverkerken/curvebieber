@@ -1,0 +1,29 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+     padding-top: 40px;
+     padding-bottom: 40px;
+     background-color: #eee;
+ }
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+1,d3d3d3+45,a8a8a8+100&0.81+0,0.81+100 */
+    background: -moz-linear-gradient(top, rgba(238,238,238,0.81) 0%, rgba(238,238,238,0.81) 1%, rgba(211,211,211,0.81) 45%, rgba(168,168,168,0.81) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(238,238,238,0.81) 0%,rgba(238,238,238,0.81) 1%,rgba(211,211,211,0.81) 45%,rgba(168,168,168,0.81) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(238,238,238,0.81) 0%,rgba(238,238,238,0.81) 1%,rgba(211,211,211,0.81) 45%,rgba(168,168,168,0.81) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfeeeeee', endColorstr='#cfa8a8a8',GradientType=0 ); /* IE6-9 */
+
+}
+
+.footer p {
+  margin: 10px 0 0 0;
+}

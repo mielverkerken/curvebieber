@@ -1,0 +1,87 @@
+//- bootstrap.jade
+//- bootstrap mixins
+
+
+//- Including Icon mixins
+include components/icons
+//- Including Alert mixins
+include components/alerts
+//- Including Tooltip mixins
+include components/tooltips
+//- Including Accordion mixins
+include components/accordion
+//- Including Carousel mixins
+include components/carousel
+//- Including Table mixins
+include components/tables
+//- Including Navbar mixins
+include components/navbar
+//- Including Toggle Button mixins
+include components/toggle
+//- Including Nav mixins
+include components/navs
+//- Including Label mixins
+include components/labels
+//- Including Panel mixins
+include components/panels
+//- Including Tab mixins
+include components/tabs
+//- Including Dropdown mixins
+include components/dropdowns
+//- Including Form control mixins
+include components/forms
+//- Including Modal dialog mixins
+include components/modal
+//- Including List group mixins
+include components/list-groups
+//- Including Progress bar mixins
+include components/progress-bars
+//- Including Button mixins
+include components/buttons
+//- Including Image mixins
+include components/images
+//- Including Bootswatch theme mixins
+include components/bootswatch
+
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport",content="width=device-width, initial-scale=1")
+		meta(name="description",content="curvebieber")
+		meta(name="author",content="Miel & Robin")
+		link(rel="icon",href="../../favicon.ico")
+		title= title
+		block styles
+			link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+			link(href='stylesheets/sticky-footer.css', rel='stylesheet')
+			link(href='/stylesheets/starter-template.css', rel='stylesheet')
+	body(data-spy="scroll",data-target=".scrollspy")
+		block body
+			+navbar-fixed("Curvebieber","navbar","inverse")
+				// +nav_item("/","active") Home
+			if message
+				if message.type === "success"
+					.alert.alert-dismissible(role="alert",class='alert-success')
+						span.glyphicon.text-success(class=`glyphicon-ok-sign`,aria-hidden="true")
+						button.close(type="button",data-dismiss="alert" aria-label="Close")
+							span(aria-hidden="true")  &times;
+						= " " + message.text
+				if message.type === "danger"
+					.alert.alert-dismissible(role="alert",class='alert-danger')
+						span.glyphicon.text-danger(class=`glyphicon-remove-sign`,aria-hidden="true")
+						button.close(type="button",data-dismiss="alert" aria-label="Close")
+							span(aria-hidden="true")  &times;
+						= " " + message.text
+			.container
+				.starter-template
+					block content
+
+		footer.footer
+			.container
+				p.text-muted.text-center Made with #[font(color="red") &#10084;] by 2 nerds
+			
+		block scripts
+			script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+			script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
