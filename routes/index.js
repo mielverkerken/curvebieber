@@ -13,6 +13,10 @@ router.get('/', function(req, res, next) {
     return res.render('index');
 });
 
+router.get('/lobby', function (req, res, next) {
+    res.render('lobby');
+});
+
 router.get("/login", function (req, res, next) {
     if (req.session.user) return res.redirect("/");
     res.render('login');
