@@ -100,7 +100,7 @@ REST ROUTES FOR GAME
 router.get('/game', async function (req, res, next) {
     let status, message, data;
     try {
-        data = await gameDAO.getAllGemes();
+        data = await gameDAO.getAllGames();
         status = 200;
     } catch (e) {
         console.error(e);

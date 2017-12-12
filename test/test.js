@@ -312,7 +312,7 @@ describe("GameDAO", function () {
     it("should be able to get all games", async function () {
         await gameDAO.addGame(game1);
         await gameDAO.addGame(game2);
-        let res = await gameDAO.getAllGemes();
+        let res = await gameDAO.getAllGames();
         res.should.have.length(2);
     });
 
@@ -326,7 +326,7 @@ describe("GameDAO", function () {
         gameDAO.getGame(game1.id).catch(e=> {
             e.should.not.be.null;
         });
-        res = await gameDAO.getAllGemes();
+        res = await gameDAO.getAllGames();
         res.should.have.length(1);
     });
 
@@ -337,7 +337,7 @@ describe("GameDAO", function () {
         res = await gameDAO.updateGame(game1);
         res = await gameDAO.getGame(game1.id);
         (res._name).should.eql(game1.name);
-        res = await gameDAO.getAllGemes();
+        res = await gameDAO.getAllGames();
         res.should.have.length(1);
     });
 });
