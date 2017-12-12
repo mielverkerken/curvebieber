@@ -13,8 +13,8 @@ class GameDAO {
     }
 
     // return all games form newest to oldest
-    async getAllGemes () {
-        return await this.source.getSortedValuesDesInRange(GAMES, 0, -1);
+    async getAllGames () {
+        return Promise.all((await this.source.getSortedValuesDesInRange(GAMES, 0, -1)).map(id => this.getGame(id)));
     }
 
     async getGame (id) {
