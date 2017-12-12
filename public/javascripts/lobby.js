@@ -3,7 +3,7 @@ $(document).ready(function () {
     var socket = io();
     socket.on('games', function (msg) {
         console.log(msg);
-        $('#gametable').html = "";
+        $('#gametable').empty();
         msg.forEach(function (game) {
             $('#gametable').append(
                 "<tr>" +

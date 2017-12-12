@@ -239,7 +239,7 @@ describe("UserDAO", function () {
         let res = await userDAO.addUser(user);
         res = await userDAO.addUser(user2);
         res = await userDAO.getAllUsers();
-        res.should.eql(["fluffy boi", "epicmieltime"]);
+        res.should.have.length(2);
     });
 
     it("should be able to get rank of a user", async function () {

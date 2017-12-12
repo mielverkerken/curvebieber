@@ -60,6 +60,9 @@ html(lang="en")
 	body(data-spy="scroll",data-target=".scrollspy")
 		block body
 			+navbar-fixed("Curvebieber","navbar","inverse")
+				if user
+					+nav_item("/lobby") Lobby
+					+nav_item("/rank") Ranking
 				// +nav_item("/","active") Home
 			if message
 				if message.type === "success"

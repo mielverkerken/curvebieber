@@ -14,7 +14,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/lobby', function (req, res, next) {
-    res.render('lobby');
+    res.render('lobby', { user: req.session.user });
+});
+
+router.get('/rank', function (req, res, next) {
+    res.render('ranking', { user: req.session.user });
 });
 
 router.get("/login", function (req, res, next) {
