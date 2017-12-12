@@ -1,18 +1,36 @@
+var games; // map: key = gameid, value = game
+
 $(document).ready(function () {
     console.log("document ready");
     var socket = io();
     socket.on('games', function (msg) {
         console.log(msg);
-        $('#gametable').empty();
-        msg.forEach(function (game) {
-            $('#gametable').append(
-                "<tr>" +
-                    "<td>" + game._name + "</td>" +
-                    "<td>" + game._joinedPlayers.length + "/" + game._maxPlayers + "</td>" +
-                    "<td>"+ game._status +"</td>" +
-                    "<td><a href='#' class='btn btn-sm btn-info btn-block'>Join</a></td>" +
-                "</td>"
-            );
-        })
+        games = msg;
+        updateTable();
+    });
+
+    // receive updated game, update model and view
+    socket.on('updateLobby', function (msg) {
+        console.log(msg);
+        if (msg.status === "delete") {
+            delete games[msg.id];
+        } else {
+            games[msg.game._id] = msg.game;
+        }
+        updateTable();
     });
 });
+
+function updateTable () {
+    $('#gametable').empty();
+    for (let game in games) {
+        $('#gametable').append(
+            "<tr>" +
+            "<td>" + games[game]._name + "</td>" +
+            "<td>" + games[game]._joinedPlayers.length + "/" + games[game]._maxPlayers + "</td>" +
+            "<td>"+ games[game]._status +"</td>" +
+            "<td><a href='/update' class='btn btn-sm btn-info btn-block'>Join</a></td>" +
+            "</td>"
+        );
+    }
+}

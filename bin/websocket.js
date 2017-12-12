@@ -12,7 +12,25 @@ class Websocket {
             // send current games
             gameDao.getAllGames().then(result => socket.emit('games', result));
         });
+        gameDao.addObserver(this);
+    }
+
+    updateLobby (game) {
+        this.io.emit('updateLobby', game);
+    }
+
+    static getInstance (io) {
+        if (!instance) {
+            instance = new Websocket(io);
+        }
+        return instance;
+    }
+
+    update (game) {
+        this.updateLobby(game);
     }
 }
+
+let instance;
 
 module.exports = Websocket;
