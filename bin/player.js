@@ -4,6 +4,7 @@ const MoveData=require("movedata");
 class Player{
     constructor(userid,color){
         this.userID = userid;
+        this.gamepoints=0;
         this.color=color;
         this.keys = {
             leftkey:false,
@@ -13,8 +14,9 @@ class Player{
         this.direction = Math.floor(Math.random()*360 + 1);
         this.speed = Math.round((constanten.UPDATEINTERVAL/constanten.SPEEDMULTIPLIER)*1000)/1000;
         this.rotationRadius = constanten.UPDATEINTERVAL/constanten.ROTATIONRADIUSMULTIPLIER;
-        this.holeTimer = null;
+        //this.holeTimer = null;
     }
+
     postKey(key,action){
         if(key === constanten.LEFTKEY){
             if( action === constanten.KEYDOWN){
@@ -33,6 +35,7 @@ class Player{
             }
         }
     }
+
     calculateNextMoveData(){
         let shouldMakeHole=(Math.floor(Math.random()*10000000/(constanten.MEANHOLEPERIOD*constanten.UPDATEINTERVAL))==0);
         if(!this.movedata.isHole&&shouldMakeHole){      //!isHole is added!!!!
