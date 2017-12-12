@@ -16,7 +16,6 @@ class GameController{
     async postUser(userID){   //new user joined the game
         if(this.game.joinedPlayers.length !== this.game.maxPlayers){
             this.game.joinedPlayers.push(userID);
-            await gameDAO.updateGame(this.game);
 
             let color = constanten.COLORS[this.game.joinedPlayers.length];
             let player=new Player(userID,color);
@@ -27,6 +26,7 @@ class GameController{
         if(this.game.joinedPlayers.length === this.game.maxPlayers){
             this.gamestatus=constanten.GAMESTATUS.PLAYING;
         }
+        await this.updateGame();
     }
     postKey(key,action,userID){ // user pressed a button
         if(this.livingPlayers.has(userID)){
@@ -51,7 +51,7 @@ class GameController{
 
 
     }
-    postGameOver(userid){
+    async postGameOver(userid){
         this.livingPlayers.delete(userid);
 
         for(let player of this.livingPlayers){
@@ -61,8 +61,8 @@ class GameController{
         if(this.livingPlayers.size === 0){     // go to the next round
             if(this.roundsLeft === 0){      // check if game is finished
                 this.gamestatus = constanten.GAMESTATUS.ENDED;
-                this.updateUsers();
-                this.updateGame();
+                await this.updateUsers();
+                await this.updateGame();
             }
             else{
                 this.roundsLeft--;
