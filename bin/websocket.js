@@ -13,6 +13,12 @@ class Websocket {
             gameDao.getAllGames().then(result => socket.emit('games', result));
         });
         gameDao.addObserver(this);
+
+        this.gameSpace = io.of('/game');
+        this.gameSpace.on('connection', function(socket){
+            console.log('connection on game');
+            socket.emit('gameUpdate', 'test');
+        });
     }
 
     updateLobby (game) {

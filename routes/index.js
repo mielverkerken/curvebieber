@@ -21,6 +21,10 @@ router.get('/rank', function (req, res, next) {
     res.render('ranking', { user: req.session.user });
 });
 
+router.get('/game', function (req, res, next) {
+    res.render('game', { user: req.session.user });
+});
+
 router.get("/login", function (req, res, next) {
     if (req.session.user) return res.redirect("/");
     res.render('login');
