@@ -1,4 +1,8 @@
 const gameDao = require('./gameDAO');
+const GameControllerFactory=require('./gamecontrollerfactory');
+const constanten = require("./const");
+const GameController=require('./gamecontroller');
+
 
 class Websocket {
     constructor(io) {
@@ -14,26 +18,35 @@ class Websocket {
         });
         gameDao.addObserver(this);
 
-        // TODO: create gameControllerFactory that create a gamecontroller if it doesn't
-        // TODO: exists and returns gamecontroller
+        let gameControllerFactory=GameControllerFactory.getInstance();
 
         this.gameSpace = io.of('/game');
         this.gameSpace.on('connection', function(socket){
-            socket.on("joinRoom", function (room, nickname) {
+            socket.on("joinRoom", async function (room, nickname) {
                 console.log(nickname + " joined room " + room);
                 socket.join(room);
-                // TODO: let gamecontroller know that player joined
+                var gameController=await gameControllerFactory.getGameController(room);
+                await gameController.postUser(nickname);
             });
 
-            socket.on("postKey", function (key, action, gameId, userId) {
-                // TODO: process action and send location to players
+            socket.on("postKey", async function (key, action, gameId, userId) {
+                await gameControllerFactory.getGameController(gameId).postKey(key,action,userId);
                 // this.updateGame(gameId, message)
             });
 
-            socket.on("gameOver", function (gameId, userId) {
-                // TODO: let gamecontroller know player died
+            socket.on("gameOver", async function (gameId, userId) {
+                await gameControllerFactory.getGameController(gameId).postGameOver(userId);
             });
         });
+
+        // broadcast periodic updates to all the gamerooms
+        let updateTimer=setInterval(function () {
+            for( let gamecontroller of gameControllerFactory.getAllGameControllers()){
+                console.log(gamecontroller);
+                instance.updateGame(gamecontroller.game._id,gamecontroller.getUpdate());
+            }
+        },constanten.UPDATEINTERVAL);
+
     }
 
     // Call this function to update players in game with gameId

@@ -1,7 +1,7 @@
-const constanten = require("const");
+const constanten = require("./const");
 class MoveData{
     constructor(userid,color){
-        this.userID=userid;
+        this.userId=userid;
         this.color=color;
         this.isHole=false;
 
@@ -13,8 +13,8 @@ class MoveData{
     }
 
     generateRandomCoordinates(){
-        this.x=this.generateRandomPosition();
-        this.y=this.generateRandomPosition();
+        this.x=this.generateRandomValue();
+        this.y=this.generateRandomValue();
     }
 }
 module.exports= MoveData;

@@ -1,16 +1,16 @@
-const constanten = require("const");
-const MoveData=require("movedata");
+const constanten = require("./const");
+const MoveData=require("./movedata");
 
 class Player{
     constructor(userid,color){
-        this.userID = userid;
+        this.userId = userid;
         this.gamepoints=0;
         this.color=color;
         this.keys = {
             leftkey:false,
             rightkey:false
         };
-        this.movedata = new MoveData(this.userID,this.color);
+        this.movedata = new MoveData(this.userId,this.color);
         this.direction = Math.floor(Math.random()*360 + 1);
         this.speed = Math.round((constanten.UPDATEINTERVAL/constanten.SPEEDMULTIPLIER)*1000)/1000;
         this.rotationRadius = constanten.UPDATEINTERVAL/constanten.ROTATIONRADIUSMULTIPLIER;
@@ -37,7 +37,7 @@ class Player{
     }
 
     calculateNextMoveData(){
-        let shouldMakeHole=(Math.floor(Math.random()*10000000/(constanten.MEANHOLEPERIOD*constanten.UPDATEINTERVAL))==0);
+        let shouldMakeHole = (Math.floor(Math.random()*10000000/(constanten.MEANHOLEPERIOD*constanten.UPDATEINTERVAL)) === 0);
         if(!this.movedata.isHole&&shouldMakeHole){      //!isHole is added!!!!
             this.movedata.isHole = true;
             this.holeTimer = setTimeout(function () {

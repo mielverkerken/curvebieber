@@ -4,3 +4,12 @@ append scripts
     script(src='/javascripts/game.js')
 block content
     input.hidden(value=game id="gameData")
+    div.col-lg-3
+        table.table(id='scoretable')
+            head
+                tr
+                th Rank
+                th Player
+                th Score
+    div.col-lg-9
+        canvas(id='curvecanvas' height=canvas.height width=canvas.width style='background-color:black')

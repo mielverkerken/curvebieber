@@ -5,6 +5,7 @@ let validate = require('express-validation');
 let userDao = require('../bin/userDAO');
 let User = require('../bin/user');
 let gameDao = require('../bin/gameDAO');
+const constanten=require('../bin/const');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -24,7 +25,7 @@ router.get('/rank', function (req, res, next) {
 
 router.get('/game/:id', async function (req, res, next) {
     let game = await gameDao.getGame(req.params.id);
-    res.render('game', { user: req.session.user, game: game });
+    res.render('game', { user: req.session.user, game: game, canvas: {width: constanten.CANVAS.WIDTH, height: constanten.CANVAS.HEIGHT} });
 });
 
 router.get("/login", function (req, res, next) {
