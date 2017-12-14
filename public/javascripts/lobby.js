@@ -1,7 +1,9 @@
 var games; // map: key = gameid, value = game
+var user;
 
 $(document).ready(function () {
     console.log("document ready");
+    user = JSON.parse($('#userData').val());
     var socket = io();
     socket.on('games', function (msg) {
         console.log(msg);
@@ -33,4 +35,21 @@ function updateTable () {
             "</td>"
         );
     }
+}
+
+function createGame() {
+    let name = $('#gamename').val();
+    let points = $('#gamepoints').val();
+    let maxPlayers = $('#gameMaxPlayers').val();
+    let joinedPlayers = [user._nickname];
+    console.log(name, points, maxPlayers, joinedPlayers);
+    $.post("/api/game", {
+        name: name,
+        points: points,
+        status: "Waiting",
+        maxPlayers: maxPlayers,
+        joinedPlayers: joinedPlayers
+    }, function (data, status) {
+        console.log(data, status);
+    });
 }
