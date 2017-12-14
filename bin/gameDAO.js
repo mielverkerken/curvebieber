@@ -10,11 +10,15 @@ const latestUsedId = "LATESTGAMEID";
 class GameDAO {
     constructor (datasource) {
         this.source = datasource;
+        this.observers = []; // observer pattern
     }
 
     // return all games form newest to oldest
     async getAllGames () {
-        return Promise.all((await this.source.getSortedValuesDesInRange(GAMES, 0, -1)).map(id => this.getGame(id)));
+        let games = await Promise.all((await this.source.getSortedValuesDesInRange(GAMES, 0, -1)).map(id => this.getGame(id)));
+        let result = {};
+        games.forEach(game => result[game._id] = game);
+        return result;
     }
 
     async getGame (id) {
@@ -41,6 +45,7 @@ class GameDAO {
             error.status = 500;
             throw error;
         }
+        this.notify( { game: game, status: "new" });
         return game;
     }
 
@@ -55,6 +60,7 @@ class GameDAO {
             console.error("something went wrong deleting game");
             return false;
         }
+        this.notify( { id: id, status: "delete" });
         return true;
     }
 
@@ -67,7 +73,16 @@ class GameDAO {
             throw error;
         }
         await this.source.setObject(prefix + game.id, game);
+        this.notify( { game: game, status: "update" });
         return game;
+    }
+
+    addObserver(observer) {
+        this.observers.push(observer);
+    }
+
+    notify (game) {
+        this.observers.forEach(observer => observer.update(game));
     }
 }
 

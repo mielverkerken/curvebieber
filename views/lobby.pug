@@ -1,0 +1,32 @@
+extends _bootstrap
+append scripts
+    script(src="/socket.io/socket.io.js")
+    script(src='/javascripts/lobby.js')
+block content
+    div.row
+        div.col-xs-10
+            h2 Games
+        div.col-xs-2
+            button.btn.btn-primary.btn-lg(data-toggle="modal" data-target="#newGameModal") New Game
+            // +btn-lg-primary("New Game")
+    div.row
+        div.col-xs-12
+            table.table(class="table-hover table-striped" style="text-align:center;")
+                thead
+                    tr
+                        th(style="text-align:center;") Name
+                        th(style="text-align:center;") Players
+                        th(style="text-align:center;") Status
+                        th()
+
+                tbody#gametable
+    +modal("New Game", "newGameModal")
+        div.form-group
+            label(for='gamename') Name:
+            input.form-control(type='text' id='gamename' value='Awesome Game' name='name' maxlength="30" required autofocus)
+        div.form-group
+            label(for='gamepoints') Points:
+            input.form-control(type='number' id='gamepoints' value='10' name='points' min="1" required)
+        div.form-group
+            label(for='gameMaxPlayers') Max Players:
+            input.form-control(type='number' id='gameMaxPlayers' value='4' name='maxPlayers' min="2" required)

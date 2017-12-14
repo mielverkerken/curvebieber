@@ -4,6 +4,7 @@ let validation = require('./validation');
 let validate = require('express-validation');
 let userDao = require('../bin/userDAO');
 let User = require('../bin/user');
+let gameDao = require('../bin/gameDAO');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,6 +12,19 @@ router.get('/', function(req, res, next) {
         return res.render('index', { title: 'Express', user: req.session.user });
     }
     return res.render('index');
+});
+
+router.get('/lobby', function (req, res, next) {
+    res.render('lobby', { user: req.session.user });
+});
+
+router.get('/rank', function (req, res, next) {
+    res.render('ranking', { user: req.session.user });
+});
+
+router.get('/game/:id', async function (req, res, next) {
+    let game = await gameDao.getGame(req.params.id);
+    res.render('game', { user: req.session.user, game: game });
 });
 
 router.get("/login", function (req, res, next) {

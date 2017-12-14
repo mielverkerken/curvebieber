@@ -1,0 +1,16 @@
+extends _bootstrap
+append scripts
+    script(src="/javascripts/ranking.js")
+block content
+    div.row
+        div.col-xs-12
+            h2 Ranking
+    div.row
+        div.col-xs-12
+            table.table.table-striped(style="text-align:center;")
+                thead
+                    tr
+                        th(style="text-align:center;") Rank
+                        th(style="text-align:center;") Nickname
+                        th(style="text-align:center;") Points
+                tbody#userranking

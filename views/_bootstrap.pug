@@ -52,14 +52,19 @@ html(lang="en")
 		meta(name="description",content="curvebieber")
 		meta(name="author",content="Miel & Robin")
 		link(rel="icon",href="../../favicon.ico")
-		title= title
+		title curvebieber
 		block styles
 			link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-			link(href='stylesheets/sticky-footer.css', rel='stylesheet')
+			link(href='/stylesheets/sticky-footer.css', rel='stylesheet')
 			link(href='/stylesheets/starter-template.css', rel='stylesheet')
 	body(data-spy="scroll",data-target=".scrollspy")
+		if user
+			input.hidden(value=user id="userData")
 		block body
 			+navbar-fixed("Curvebieber","navbar","inverse")
+				if user
+					+nav_item("/lobby") Lobby
+					+nav_item("/rank") Ranking
 				// +nav_item("/","active") Home
 			if message
 				if message.type === "success"

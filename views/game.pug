@@ -1,0 +1,6 @@
+extends _bootstrap
+append scripts
+    script(src="/socket.io/socket.io.js")
+    script(src='/javascripts/game.js')
+block content
+    input.hidden(value=game id="gameData")
