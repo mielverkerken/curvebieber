@@ -31,7 +31,7 @@ function updateTable () {
             "<td>" + games[game]._name + "</td>" +
             "<td>" + games[game]._joinedPlayers.length + "/" + games[game]._maxPlayers + "</td>" +
             "<td>"+ games[game]._status +"</td>" +
-            "<td><a href='/update' class='btn btn-sm btn-info btn-block'>Join</a></td>" +
+            "<td><a href='/game/" + games[game]._id + "' class='btn btn-sm btn-info btn-block'>Join</a></td>" +
             "</td>"
         );
     }
