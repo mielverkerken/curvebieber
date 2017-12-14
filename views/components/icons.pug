@@ -4,6 +4,7 @@ mixin icon(name)
 	
 mixin icon-primary(name)
 	span.glyphicon.text-primary(class=`glyphicon-${name}`,aria-hidden="true")
+		block
 
 mixin icon-info(name)
 	span.glyphicon.text-info(class=`glyphicon-${name}`,aria-hidden="true")
@@ -16,4 +17,4 @@ mixin icon-danger(name)
 	
 mixin icon-success(name)
 	span.glyphicon.text-success(class=`glyphicon-${name}`,aria-hidden="true")
-	
+

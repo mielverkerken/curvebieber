@@ -239,7 +239,7 @@ describe("UserDAO", function () {
         let res = await userDAO.addUser(user);
         res = await userDAO.addUser(user2);
         res = await userDAO.getAllUsers();
-        res.should.eql(["fluffy boi", "epicmieltime"]);
+        res.should.have.length(2);
     });
 
     it("should be able to get rank of a user", async function () {
@@ -313,7 +313,8 @@ describe("GameDAO", function () {
         await gameDAO.addGame(game1);
         await gameDAO.addGame(game2);
         let res = await gameDAO.getAllGames();
-        res.should.have.length(2);
+        res[game1.id].should.not.be.null;
+        res[game2.id].should.not.be.null;
     });
 
     it("should be able to delete a game", async function () {
@@ -327,7 +328,7 @@ describe("GameDAO", function () {
             e.should.not.be.null;
         });
         res = await gameDAO.getAllGames();
-        res.should.have.length(1);
+        res[game2.id].should.not.be.null;
     });
 
     it("should be able to update a game", async function () {
@@ -338,6 +339,6 @@ describe("GameDAO", function () {
         res = await gameDAO.getGame(game1.id);
         (res._name).should.eql(game1.name);
         res = await gameDAO.getAllGames();
-        res.should.have.length(1);
+        res[game1.id].should.not.be.null;
     });
 });

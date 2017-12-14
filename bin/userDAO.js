@@ -14,7 +14,7 @@ class UserDAO {
 
     // returns nicknames of all users in order of descending rank
     async getAllUsers () {
-        return await this.source.getSortedValuesDesInRange(RANK, 0, -1);
+        return Promise.all((await this.source.getSortedValuesDesInRange(RANK, 0, -1)).map(nickname => this.getUser(nickname)));
     }
 
     // returns full object of a user
