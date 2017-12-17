@@ -26,6 +26,7 @@ $(document).ready(function () {
 function updateTable () {
     $('#gametable').empty();
     for (let game in games) {
+        console.log(game);
         $('#gametable').append(
             "<tr>" +
             "<td>" + games[game]._name + "</td>" +

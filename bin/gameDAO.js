@@ -28,7 +28,9 @@ class GameDAO {
             error.status = 404;
             throw error;
         }
-        return result;
+        let game = new Game(result._name, result._points, result._status, result._maxPlayers, result._joinedPlayers);
+        game._id=result._id;
+        return game;
     }
 
     // gives a game an id, adds it to redis and add it in ordered set of games sorted on timestamp

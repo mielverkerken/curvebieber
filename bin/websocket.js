@@ -22,6 +22,7 @@ class Websocket {
 
         this.gameSpace = io.of('/game');
         this.gameSpace.on('connection', function(socket){
+            console.log("connected to game");
             socket.on("joinRoom", async function (room, nickname) {
                 console.log(nickname + " joined room " + room);
                 socket.join(room);
