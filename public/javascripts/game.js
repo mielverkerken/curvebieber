@@ -4,47 +4,41 @@ const KEYUP = "keyup";
 
 //mapping keycode on keyname that server expects
 var keys=new Map();
-keys.set(37,"leftkey");
-keys.set(39,"rightkey");
+keys.set(37,"leftkey");     //left arrow
+keys.set(39,"rightkey");    //right arrow
 
 // store previously recieved movedata for drawing lines on canvas
 var previousMoveDataMap=null;
 
 var gameData;
 var userData;
+var roundsLeft = undefined;
 
 $(document).ready(function () {
 
-    // get canvas element and set width of curves
+    // Get canvas element and set width of curves
     let canvas=document.getElementById("curvecanvas");
     let ctx=canvas.getContext("2d");
     ctx.lineWidth=lineWidth;
+
 
     // Read user & game data out hidden fields in html
     gameData  = JSON.parse($('#gameData').val());
     userData = JSON.parse($('#userData').val());
 
-    // connect to room
+    // Connect to room
     let socket = io('/game');
     socket.emit("joinRoom", gameData._id, userData._nickname);
 
-    // receives update from server and draws them on the canvas
-    socket.on('gameUpdate', function (msg) {
-        console.log(msg);
-        drawNextCurves(JSON.parse(msg));
+    // Receives update from server and draws them on the canvas
+    socket.on("updateGame", function (msg) {
+        updateGame(JSON.parse(msg));
     });
 
-    // loop song
-    let curveAudio = new Audio('/audio/curvebiebersong.mp3');
+    // Loops song
+    startMusic();
 
-    curveAudio.addEventListener('ended', function() {
-        this.currentTime = 0;
-        this.play();
-    }, false);
-
-    curveAudio.play();
-
-    // handle keyevents
+    // Handle keyevents
     $(window).keydown(function (event) {
         handleKeyEvent(event,KEYDOWN);
     });
@@ -59,49 +53,122 @@ $(document).ready(function () {
             socket.emit("postKey", keys.get(key), action, gameData._id,userData._nickname);
         }
     }
-    function drawNextCurves(data) {
-        let roundLeft=data.roundsLeft;
-        if(roundLeft>=0){                           //TODO: check if >= or >
-            let currentMoveDataMap=data.moveDataMap;
-            if(currentMoveDataMap.size !== 0){ //check if game is started
-                if(previousMoveDataMap !== null){
-                    for(let userid of currentMoveDataMap.keys()){
-                        console.log(currentMoveDataMap.get(userid).x+", "currentMoveDataMap.get(userid).y);
-                        checkAndDrawNextCurveForUser(previousMoveDataMap.get(userid),currentMoveDataMap.get(userid));
 
+    function updateGame(data) {
+        updateScoreTable(data.ranking);
+
+        if(roundsLeft !== data.roundsLeft ){
+            roundsLeft = data.roundsLeft;
+            clearCanvas();
+            updateRoundsLeft(roundsLeft);
+            previousMoveDataMap = null;
+        }
+
+        if(roundsLeft > 0 || roundsLeft === undefined){
+            let currentMoveDataMap=data.moveDataMap;
+            if(Object.keys(currentMoveDataMap).length !== 0){ //Check if game is started
+                if(previousMoveDataMap !== null){
+                    for(let userid of Object.keys(currentMoveDataMap)){
+                        checkNextCurveForUser(userid,previousMoveDataMap[userid],currentMoveDataMap[userid]);
                     }
                 }
-                previousMoveDataMap=currentMoveDataMap;
+                else{
+                    clearCanvas();
+                }
+                previousMoveDataMap = currentMoveDataMap;
+            }
+            else{                                           //Waiting for all players to join
+                drawCanvasText("WAITING FOR OTHER PLAYERS");
+            }
+        }
+        else{
+            drawCanvasText("GAME ENDED");
+        }
+    }
+
+    function checkNextCurveForUser(userId,previousMoveData,currentMoveData) {
+
+        //Only check if user is dead when the client corresponds to this user
+        if(!currentMoveData.isHole){
+            if(userId === userData._nickname){
+                if( !isDead(currentMoveData)){
+                    drawNextCurveForUser(previousMoveData,currentMoveData);
+
+                }
+                else{
+                    console.log(userId+" is dood");
+                }
+            } else {
+                drawNextCurveForUser(previousMoveData,currentMoveData);
             }
         }
     }
-    function checkAndDrawNextCurveForUser(userId,previousMoveData,currentMoveData) {
-        //only check if user is dead if the client corresponds to this user
-        if(userId === userData._nickname && !isDead(currentMoveData)){
-            drawCurveForUser(previousMoveData,currentMoveData);
-        } else if (userId !== userData._nickname){
-            drawCurveForUser(previousMoveData,currentMoveData);
-        }
-    }
+
     function isDead(currentMoveData) {
-        //TODO: optimize window that should be checked for background collor
+
         var imgData=ctx.getImageData(currentMoveData.x,currentMoveData.y,1,1);
-        //if canvas has other color than backgroundcolor, the player is dead
-        if(imgData[0] !== 0 && imgData[1] !== 0 && imgData[2]!== 0){
+
+        //  If curveline has other color than backgroundcolor or crashes into the border,
+        //  the player is dead
+
+        if( (imgData.data[0] != 0 || imgData.data[1] != 0 || imgData.data[2] != 0)
+                    || currentMoveData.x < lineWidth/2
+                    || currentMoveData.y < lineWidth/2
+                    || currentMoveData.x > canvas.width-lineWidth/2
+                    || currentMoveData.y > canvas.height-lineWidth/2){
+
             socket.emit("gameOver",gameData._id,userData._nickname);
             return true;
         }
         else return false;
     }
-    function drawCurveForUser(previousMoveData,currentMoveData) {
-        ctx.strokeStyle=previousMoveData.color;
-        ctx.moveTo(previousMoveData.x,previousMoveData.y);
-        ctx.lineTo(currentMoveData.x,currentMoveData.y);
+    function drawNextCurveForUser(previousMoveData,currentMoveData) {
+
+        ctx.strokeStyle = currentMoveData.color;
+        ctx.beginPath();
+        ctx.moveTo(previousMoveData.x, previousMoveData.y);
+        ctx.lineTo(currentMoveData.x, currentMoveData.y);
+        ctx.stroke();
     }
 
+    function clearCanvas() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+
+    function drawCanvasText(text) {
+        ctx.fillStyle="#FFFFFF";
+        ctx.textAlign="center";
+        ctx.font="50px Arial";
+        ctx.fillText(text,canvas.width/2,canvas.height/2)
+    }
+
+    function startMusic() {
+        let curveAudio = new Audio('/audio/curvebiebersong.mp3');
+
+        curveAudio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+
+        curveAudio.play();
+    }
+
+    function updateRoundsLeft(roundsLeft) {
+        $('#roundsLeft').text("rounds left: " + roundsLeft);
+    }
+
+    function updateScoreTable(ranking) {
+        $('#scoretable').empty();
+        let rank = 1;
+        for(let player of ranking){
+            $('#scoretable').append(
+                "<tr>" +
+                "<td>" + rank + "</td>" +
+                "<td>" + player.nickname + "</td>" +
+                "<td>" + player.points + "</td>" +
+                "</tr>"
+            );
+            rank++;
+        }
+    }
 });
-
-
-
-
-// TODO: post "gameOver" with param: gameId and userId when player is dead

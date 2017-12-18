@@ -27,14 +27,19 @@ function updateTable () {
     $('#gametable').empty();
     for (let game in games) {
         console.log(game);
+        var disabled = (games[game]._status !== "waiting");
+        var href ='/game/'+ games[game]._id;
         $('#gametable').append(
             "<tr>" +
             "<td>" + games[game]._name + "</td>" +
             "<td>" + games[game]._joinedPlayers.length + "/" + games[game]._maxPlayers + "</td>" +
             "<td>"+ games[game]._status +"</td>" +
             "<td><a href='/game/" + games[game]._id + "' class='btn btn-sm btn-info btn-block'>Join</a></td>" +
-            "</td>"
+            "</tr>"
         );
+        if(disabled){
+            $("a[href='"+href+"']").addClass("disabled");
+        }
     }
 }
 
@@ -42,14 +47,14 @@ function createGame() {
     let name = $('#gamename').val();
     let points = $('#gamepoints').val();
     let maxPlayers = $('#gameMaxPlayers').val();
-    let joinedPlayers = [user._nickname];
-    console.log(name, points, maxPlayers, joinedPlayers);
+    //let joinedPlayers = [];
+    console.log(name, points, maxPlayers);//, joinedPlayers);
     $.post("/api/game", {
         name: name,
         points: points,
-        status: "Waiting",
+        status: "waiting",
         maxPlayers: maxPlayers,
-        joinedPlayers: joinedPlayers
+        //joinedPlayers: joinedPlayers
     }, function (data, status) {
         console.log(data, status);
     });

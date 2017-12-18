@@ -1,20 +1,20 @@
 const constanten = require("./const");
 class MoveData{
     constructor(userid,color){
-        this.userId=userid;
-        this.color=color;
-        this.isHole=false;
+        this.userId = userid;
+        this.color = color;
+        this.isHole = false;
 
-        this.generateRandomCoordinates();
+        this.randomizeCoordinates();
     }
 
-    generateRandomValue(){
-        return Math.floor(Math.random()*(constanten.CANVAS.WIDTH-2*constanten.SPANDISTANCEFROMBORDER))+constanten.SPANDISTANCEFROMBORDER;
+    static generateRandomValue(size){
+        return Math.floor(Math.random()*(size-2*constanten.SPANDISTANCEFROMBORDER))+constanten.SPANDISTANCEFROMBORDER;
     }
 
-    generateRandomCoordinates(){
-        this.x=this.generateRandomValue();
-        this.y=this.generateRandomValue();
+    randomizeCoordinates(){
+        this.x = MoveData.generateRandomValue(constanten.CANVAS.WIDTH);
+        this.y = MoveData.generateRandomValue(constanten.CANVAS.HEIGHT);
     }
 }
-module.exports= MoveData;
+module.exports = MoveData;

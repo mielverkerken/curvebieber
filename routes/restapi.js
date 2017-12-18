@@ -115,7 +115,7 @@ router.get('/game', async function (req, res, next) {
 router.post('/game', validate(validation.newGame), async function (req, res, next) {
     let status, message, data;
     try{
-        let game = new Game(req.body.name, req.body.points, req.body.status, req.body.maxPlayers, req.body.joinedPlayers);
+        let game = new Game(req.body.name, req.body.points, req.body.status, req.body.maxPlayers);//, req.body.joinedPlayers);
         status = 200;
         data = await gameDAO.addGame(game);
     } catch (e) {

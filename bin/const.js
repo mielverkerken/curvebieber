@@ -3,7 +3,7 @@ module.exports = {
     KEYUP: "keyup",
     LEFTKEY: 'leftkey',
     RIGHTKEY: 'rightkey',
-    UPDATEINTERVAL: 30, // update interval for game in ms
+    UPDATEINTERVAL: 20, // update interval for game in ms
     CANVAS: {
         WIDTH: 850,
         HEIGHT: 750,
@@ -23,9 +23,10 @@ module.exports = {
                 "rgb(102, 51, 0)",
                 "rgb(255, 153, 0)",
             ],
-    SPEEDMULTIPLIER: 350,   // smaller => higher speed
-    ROTATIONRADIUSMULTIPLIER: 300,    // smaller => wider rotation
+    SPEEDMULTIPLIER: 0.35 ,   // smaller => higher speed //350
+    ROTATIONRADIUSMULTIPLIER: 0.45,    // smaller => wider rotation
     HOLELENGTHMULTIPLIER: 10,   // smaller => smaller hole
     MEANHOLEPERIOD: 2000,   // the mean period at which a hole appears in the curve line
     SPANDISTANCEFROMBORDER: 50, // the minimum spawndistance from the canvas border
+    ENDGAMETIME: 1000,  //time (in ms) to wait before ending the game (give clients possibility to render last results)
 };

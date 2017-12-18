@@ -26,25 +26,33 @@ class Websocket {
             socket.on("joinRoom", async function (room, nickname) {
                 console.log(nickname + " joined room " + room);
                 socket.join(room);
-                var gameController=await gameControllerFactory.getGameController(room);
+                let gameController = await gameControllerFactory.getGameController(room);
                 await gameController.postUser(nickname);
             });
 
             socket.on("postKey", async function (key, action, gameId, userId) {
-                await gameControllerFactory.getGameController(gameId).postKey(key,action,userId);
-                // this.updateGame(gameId, message)
+                let gameController = await gameControllerFactory.getGameController(gameId);
+                gameController.postKey(key,action,userId);
             });
 
             socket.on("gameOver", async function (gameId, userId) {
-                await gameControllerFactory.getGameController(gameId).postGameOver(userId);
+                let gameController = await gameControllerFactory.getGameController(gameId);
+                await gameController.postGameOver(userId);
             });
         });
 
         // broadcast periodic updates to all the gamerooms
-        let updateTimer=setInterval(function () {
+        let updateTimer=setInterval(async function () {
             for( let gamecontroller of gameControllerFactory.getAllGameControllers()){
-                console.log(gamecontroller);
-                instance.updateGame(gamecontroller.game._id,gamecontroller.getUpdate());
+                if (gamecontroller.game._status !== constanten.GAMESTATUS.ENDED){
+                    instance.updateGame(gamecontroller.game._id,JSON.stringify(gamecontroller.getUpdate()));
+                } else{
+                    console.log("game "+gamecontroller.game._id+" verwijderd");
+                    await gameControllerFactory.deleteGameController(gamecontroller);
+
+                }
+
+                //instance.io.in(gamecontroller.game._id).emit("updateGame", gamecontroller.getUpdate());
             }
         },constanten.UPDATEINTERVAL);
 
@@ -52,7 +60,7 @@ class Websocket {
 
     // Call this function to update players in game with gameId
     updateGame(gameId, message) {
-        this.io.in(gameId).emit("updateGame", message);
+        this.gameSpace.in(gameId).emit("updateGame", message);
     }
 
     // all users on /lobby will update their model and view 'game'
