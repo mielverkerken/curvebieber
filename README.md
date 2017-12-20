@@ -1,7 +1,7 @@
 # groep-11 - CurveBieber
 Miel Verkerken - Robin Dejonckheere
 
-#FUNCTIONALITY
+# FUNCTIONALITY
 Our webapplication CurveBieber is a game based on the CurveFever game.
 
 Every player has a snake - or curve - which is controlled by the left and right arrow keys.
@@ -12,7 +12,7 @@ The first players that dies gets zero points, the second one, the third two,...
 Every round, the playing field is cleared and every player starts with a new curve.
 At the end of the game, the players scores are added to the points of their account.
 
-#HOW TO PLAY
+# HOW TO PLAY
 1. Start the application and browse to [our webpage](http://localhost:3000).
 2. Register a new user, submit your name and credentials.
 3. Login with your credentials.
@@ -29,7 +29,7 @@ At the end of the game, the players scores are added to the points of their acco
 8. When the game is ended, go back to the lobby to play another game or go to the ranking
    page to see your total points.
 
-#IMPLEMENTATION
+# IMPLEMENTATION
 - Our webapplication is developed using in Node.js Express.
 - We use Redis as a database for the users and games.
 - We use websockets from Socket.IO to communicate with the clients:
