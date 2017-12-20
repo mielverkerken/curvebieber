@@ -48,7 +48,8 @@ app.use(function (req, res, next) {
         return next();
     }
     if (!req.session.user && req.originalUrl !== "/" && req.originalUrl !== "/login" && req.originalUrl !== "/register") {
-        return res.render("login", {message: "first login before accessing the restricted area"});
+        req.session.unauthorised = true;
+        return res.redirect("login");
     }
     next();
 });

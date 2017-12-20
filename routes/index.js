@@ -12,13 +12,15 @@ router.get('/', function(req, res, next) {
     if (req.session.user) {
         if(req.session.loggedin){
             req.session.loggedin = false;
-            return res.render('index', { title: 'CurveBieber', user: req.session.user, message: { type: "success", text: "successfully logged in"} });
+            res.render('index', { title: 'CurveBieber', user: req.session.user, message: { type: "success", text: "successfully logged in"} });
         }
         else{
-            return res.render('index', { title: 'CurveBieber', user: req.session.user});
+            res.render('index', { title: 'CurveBieber', user: req.session.user});
         }
     }
-    return res.redirect("/login");
+    else{
+        res.redirect("/login");
+    }
 });
 
 router.get('/lobby', function (req, res, next) {
@@ -35,9 +37,20 @@ router.get('/game/:id', async function (req, res, next) {
 });
 
 router.get("/login", function (req, res, next) {
-    if (req.session.user) return res.redirect("/");
-    if (req.session.loggedout){
+    if (req.session.user){
+        res.redirect("/");
+    }
+    else if (req.session.unauthorised){
+        req.session.unauthorised = false;
+        res.render('login', { message: {type: "danger", text: "login before entering the restricted area"}})
+    }
+    else if (req.session.loggedout){
+        req.session.loggedout = false;
         res.render('login', { message: {type: "success", text: "successfully logged out"} });
+    }
+    else if(req.session.registered){
+        req.session.registered = false;
+        res.render('login', { message: {type: "success", text: "successfully registered"} });
     }
     else{
         res.render('login');
@@ -52,11 +65,14 @@ router.post("/login", validate(validation.login), async function (req, res, next
             req.session.user = user;
             //return res.render("index", { user: user, message: { type: "success", text: "successfully logged in"}});
             req.session.loggedin = true;
-            return res.redirect("/");
+            res.redirect("/");
         }
-        return res.render('login', { message: { type: "danger", text: "incorrect password"} });
+        else{
+            res.render('login', { message: { type: "danger", text: "incorrect password"} });
+        }
+
     } catch (e) {
-        return res.render('login', { message: { type: "danger", text: "incorrect nickname"} });
+        res.render('login', { message: { type: "danger", text: "incorrect nickname"} });
     }
 });
 
@@ -67,11 +83,9 @@ router.get("/register", function (req, res, next) {
 
 router.get("/logout", async function (req, res, next) {
     if (req.session.user) {
-
-        req.session.destroy(function (err) {
-            //return res.render('login', { message: {type: "success", text: "successfully logged out"} });
-            res.redirect('login');
-        });
+        req.session.loggedout = true;
+        req.session.user = null;
+        res.redirect("login");
     }
 });
 
@@ -79,9 +93,10 @@ router.post("/register", validate(validation.register), async function (req, res
     try {
         let user = new User(req.body.firstname, req.body.lastname, req.body.nickname, 0, req.body.password);
         await userDao.addUser(user);
-        return res.render('login', { message: {type: "success", text: "successfully registered"} });
+        req.session.registered = true;
+        res.redirect("login");
     } catch (e) {
-        return res.render('register', {message: {type: "danger", text: e }});
+        res.render('register', {message: {type: "danger", text: e }});
     }
 });
 

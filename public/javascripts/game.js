@@ -1,6 +1,7 @@
 const lineWidth = 8;
 const KEYDOWN = "keydown";
 const KEYUP = "keyup";
+const song = '/audio/curvebiebersong.mp3';
 
 //mapping keycode on keyname that server expects
 var keys=new Map();
@@ -54,6 +55,7 @@ $(document).ready(function () {
         }
     }
 
+    // Update the canvas and scoretable every time the server sends an updateGame message
     function updateGame(data) {
         updateScoreTable(data.ranking);
 
@@ -67,7 +69,7 @@ $(document).ready(function () {
         if(roundsLeft > 0 || roundsLeft === undefined){
             let currentMoveDataMap=data.moveDataMap;
             if(Object.keys(currentMoveDataMap).length !== 0){ //Check if game is started
-                if(previousMoveDataMap !== null){
+                if(previousMoveDataMap !== null){           // Only draw after first movedata arrived
                     for(let userid of Object.keys(currentMoveDataMap)){
                         checkNextCurveForUser(userid,previousMoveDataMap[userid],currentMoveDataMap[userid]);
                     }
@@ -93,10 +95,9 @@ $(document).ready(function () {
             if(userId === userData._nickname){
                 if( !isDead(currentMoveData)){
                     drawNextCurveForUser(previousMoveData,currentMoveData);
-
                 }
                 else{
-                    console.log(userId+" is dood");
+                    console.log(userId+" is dead");
                 }
             } else {
                 drawNextCurveForUser(previousMoveData,currentMoveData);
@@ -143,18 +144,17 @@ $(document).ready(function () {
     }
 
     function startMusic() {
-        let curveAudio = new Audio('/audio/curvebiebersong.mp3');
+        let curveAudio = new Audio(song);
 
         curveAudio.addEventListener('ended', function() {
             this.currentTime = 0;
             this.play();
         }, false);
-
         curveAudio.play();
     }
 
     function updateRoundsLeft(roundsLeft) {
-        $('#roundsLeft').text("rounds left: " + roundsLeft);
+        $('#roundsLeft').text("Rounds left: " + roundsLeft);
     }
 
     function updateScoreTable(ranking) {
@@ -164,7 +164,7 @@ $(document).ready(function () {
             $('#scoretable').append(
                 "<tr>" +
                 "<td>" + rank + "</td>" +
-                "<td>" + player.nickname + "</td>" +
+                "<td style='color:"+player.color+";font-weight: bold;'>" + player.nickname + "</td>" +
                 "<td>" + player.points + "</td>" +
                 "</tr>"
             );

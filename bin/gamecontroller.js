@@ -103,7 +103,7 @@ class GameController{
     buildRankingTable(){
         this.ranking = [];
         for (let player of this.players.values()){
-            this.ranking.push({nickname: player.userId, points: player.points});
+            this.ranking.push({nickname: player.userId, color:player.color, points: player.points});
         }
         this.ranking.sort(function (a,b) {
             return b.points - a.points;
