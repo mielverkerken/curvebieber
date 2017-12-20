@@ -49,7 +49,7 @@ At the end of the game, the players scores are added to the points of their acco
       The player should see his curve rotating instantly when he presses an arrow key and this is only
       possible by sending coordinates to the clients every 20ms. We read about prediction models that
       make realtime network games possible without high frequent messaging but we didn't had the time to
-      implement this and think that this excluded the scope our this course.
+      implement this and think that this excluded the scope of this course.
 - We use REST to post newly created games and to get the ranking.
   Other REST services are provided but not used. (See below)
 - We use forms to register and login users.
