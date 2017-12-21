@@ -1,10 +1,10 @@
 class Game {
-    constructor (name, points, status, maxPlayers){
+    constructor (name, points, status, maxPlayers, joinedPlayers = []){
         this._name = name;
         this._points = points;
         this._status = status;
         this._maxPlayers = maxPlayers;
-        this._joinedPlayers = [];
+        this._joinedPlayers = joinedPlayers;
         this._timestamp = Date.now();
         this._id = null;
     }
