@@ -110,6 +110,10 @@ class Redis {
         return this.client.existsAsync(key).then(reply => reply === 1);
     }
 
+    deletePropObject (object, prop) {
+        return this.client.hdelAsync(object, prop).then(reply => reply === 1);
+    }
+
     delete (key) {
         return this.client.delAsync(key).then(reply => reply === 1);
     }

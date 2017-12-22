@@ -12,8 +12,14 @@ The first players that dies gets zero points, the second one, the third two,...
 Every round, the playing field is cleared and every player starts with a new curve.
 At the end of the game, the players scores are added to the points of their account.
 
+# SETUP APPLICATION
+1. clone github
+2. execute `cd groep-11`
+3. execute `docker-compose up`
+
+
 # HOW TO PLAY
-1. Start the application and browse to [our webpage](http://localhost:3000).
+1. Browse to [our webpage](http://localhost:3000).
 2. Register a new user, submit your name and credentials.
 3. Login with your credentials.
 4. Go to the Lobby.
@@ -45,11 +51,6 @@ At the end of the game, the players scores are added to the points of their acco
       calculated coordinates. When this happens, he sends a message to the server.
       We wanted to check this serverside but failed to install the node-canvas module
       so we could simulate the playing field on the server.
-    - It would be impossible to play the game on a big network because of the varying network latencies.
-      The player should see his curve rotating instantly when he presses an arrow key and this is only
-      possible by sending coordinates to the clients every 20ms. We read about prediction models that
-      make realtime network games possible without high frequent messaging but we didn't had the time to
-      implement this and think that this excluded the scope of this course.
 - We use REST to post newly created games and to get the ranking.
   Other REST services are provided but not used. (See below)
 - We use forms to register and login users.

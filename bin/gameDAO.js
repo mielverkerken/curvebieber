@@ -74,6 +74,9 @@ class GameDAO {
             error.status = 404;
             throw error;
         }
+        if (exists._joinedPlayers === "") {
+            this.source.deletePropObject(prefix + game.id, "_joinedPlayers");
+        }
         await this.source.setObject(prefix + game.id, game);
         this.notify( { game: game, status: "update" });
         return game;
