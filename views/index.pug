@@ -1,7 +1,27 @@
 extends _bootstrap
 
 block content
-  h1= title
-  p Welcome to #{title}
-  if user
+  //h1= title
+  //p Welcome to #{title}
+  //if user
     // p #{user._firstname} #{user._lastname} #{user._nickname}
+  h2 Welcome to #{title}
+  #myCarousel.carousel.slide(data-ride='carousel')
+    // Indicators
+    ol.carousel-indicators
+      li.active(data-target='#myCarousel' data-slide-to='0')
+      li(data-target='#myCarousel' data-slide-to='1')
+    // Wrapper for slides
+    .carousel-inner
+      .item.active
+        img(src='images/curvegame.jpg' alt='CurveBieber' style='width: 100%;' onclick="window.location='/lobby'")
+      .item
+        img(src='images/curvegame2.jpg' alt='CurveGame' style='width: 100%;' onclick="window.location='/rank'")
+    // Left and right controls
+    a.left.carousel-control(href='#myCarousel' data-slide='prev')
+      span.glyphicon.glyphicon-chevron-left
+      span.sr-only Previous
+    a.right.carousel-control(href='#myCarousel' data-slide='next')
+      span.glyphicon.glyphicon-chevron-right
+      span.sr-only Next
+

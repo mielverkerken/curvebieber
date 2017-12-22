@@ -8,6 +8,7 @@ var responseTime = require('response-time');
 let api = require('./routes/restapi');
 let session = require('express-session');
 let RedisStore = require('connect-redis')(session);
+let consts = require('./bin/const');
 
 var index = require('./routes/index');
 var user = require('./routes/user');
@@ -34,8 +35,8 @@ app.use(session({
     saveUninitialized: false,
     secret: "our private key 12345",
     store: new RedisStore({
-        host: '127.0.0.1',
-        port: 6379,
+        host: consts.REDISCONTAINER,
+        port: consts.REDISPORT,
         prefix: 'session:',
         ttl: 3600 // remove session after 1h
     })
@@ -48,7 +49,8 @@ app.use(function (req, res, next) {
         return next();
     }
     if (!req.session.user && req.originalUrl !== "/" && req.originalUrl !== "/login" && req.originalUrl !== "/register") {
-        return res.render("login", {message: "first login before accessing the restricted area"});
+        req.session.unauthorised = true;
+        return res.redirect("login");
     }
     next();
 });

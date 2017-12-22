@@ -27,7 +27,6 @@ let newGame = {
         points: Joi.number().required(),
         status: Joi.string().max(MAXCHAR).required(),
         maxPlayers: Joi.number().required(),
-        joinedPlayers: Joi.array().required()
     }
 };
 
@@ -37,7 +36,6 @@ let updateGame = {
         points: Joi.number().required(),
         status: Joi.string().max(MAXCHAR).required(),
         maxPlayers: Joi.number().required(),
-        joinedPlayers: Joi.array().required()
     }
 };
 

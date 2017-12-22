@@ -49,7 +49,7 @@ html(lang="en")
 		meta(charset="UTF-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name="viewport",content="width=device-width, initial-scale=1")
-		meta(name="description",content="curvebieber")
+		meta(name="description",content="CurveBieber")
 		meta(name="author",content="Miel & Robin")
 		link(rel="icon",href="../../favicon.ico")
 		title curvebieber
@@ -61,11 +61,10 @@ html(lang="en")
 		if user
 			input.hidden(value=user id="userData")
 		block body
-			+navbar-fixed("Curvebieber","navbar","inverse")
+			+navbar-fixed("CurveBieber","navbar","inverse")
 				if user
 					+nav_item("/lobby") Lobby
 					+nav_item("/rank") Ranking
-				// +nav_item("/","active") Home
 			if message
 				if message.type === "success"
 					.alert.alert-dismissible(role="alert",class='alert-success')

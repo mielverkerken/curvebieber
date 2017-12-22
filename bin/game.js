@@ -1,5 +1,5 @@
 class Game {
-    constructor (name, points, status, maxPlayers, joinedPlayers) {
+    constructor (name, points, status, maxPlayers, joinedPlayers = []){
         this._name = name;
         this._points = points;
         this._status = status;

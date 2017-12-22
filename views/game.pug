@@ -4,3 +4,19 @@ append scripts
     script(src='/javascripts/game.js')
 block content
     input.hidden(value=game id="gameData")
+    div.row
+        div.col-lg-3
+            div.row
+                //div.panel(class=`panel-default` style="text-align:center; font-weight: bold; font-size: 150%;")
+                    div.panel-body#roundsLeft
+                div.well.well-sm(style="text-align:center; font-weight: bold;")#roundsLeft
+            div.row
+                table.table(class="table-hover table-striped" style="text-align:center;")
+                    thead
+                        tr
+                            th(style="text-align:center;") Rank
+                            th(style="text-align:center;") Player
+                            th(style="text-align:center;") Score
+                    tbody#scoretable
+        div.col-lg-9
+            canvas(id='curvecanvas' height=canvas.height width=canvas.width style='background-color:black')
