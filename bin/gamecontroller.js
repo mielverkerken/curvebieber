@@ -59,10 +59,9 @@ class GameController{
     }
 
     async postGameOver(userid){
-        if (this.game._status === constanten.GAMESTATUS.PLAYING){
+        if (this.game._status === constanten.GAMESTATUS.PLAYING && this.livingPlayers.has(userid)){
 
             this.livingPlayers.delete(userid);
-
             for (let player of this.livingPlayers.values()){
                 player.points++;                    //give all the living players an extra point
             }

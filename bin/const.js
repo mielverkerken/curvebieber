@@ -18,10 +18,10 @@ module.exports = {
                 "rgb(0, 102, 255)",
                 "rgb(255, 153, 255)",
                 "rgb(255, 0, 0)",
-                "rgb(255, 255, 255)",
                 "rgb(0, 153, 0)",
                 "rgb(102, 51, 0)",
                 "rgb(255, 153, 0)",
+                "rgb(255, 255, 255)",
             ],
     SPEEDMULTIPLIER: 0.35 ,   // smaller => higher speed //350
     ROTATIONRADIUSMULTIPLIER: 0.45,    // smaller => wider rotation
@@ -29,4 +29,6 @@ module.exports = {
     MEANHOLEPERIOD: 2000,   // the mean period at which a hole appears in the curve line
     SPANDISTANCEFROMBORDER: 50, // the minimum spawndistance from the canvas border
     ENDGAMETIME: 1000,  //time (in ms) to wait before ending the game (give clients possibility to render last results)
+    REDISPORT: 6379,
+    REDISCONTAINER: "redis",
 };

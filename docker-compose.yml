@@ -3,10 +3,10 @@ services:
   redis:
     image: redis
   node:
-    image: curve
+    build: .
     depends_on:
       - redis
     ports:
       - "3000:3000"
     links:
-      - "redis:redis"
+      - redis

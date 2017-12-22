@@ -2,12 +2,13 @@ let redis = require("redis");
 let flatten = require('flat');
 let unflatten = flatten.unflatten;
 let bluebird = require('bluebird');
+let consts = require('./const');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 
 class Redis {
     constructor () {
-        this.client = redis.createClient();
+        this.client = redis.createClient(consts.REDISPORT, consts.REDISCONTAINER);
         this.client.on('error', function (err) {
             console.error(err);
         });

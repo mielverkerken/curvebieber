@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $.get("http://localhost:3000/api/user", function (result) {
+    $.get("/api/user", function (result) {
         console.log(result);
         if (result.meta.status >= 200 && result.meta.status < 400) {
             let rank = 1;
